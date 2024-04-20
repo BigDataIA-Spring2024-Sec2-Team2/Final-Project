@@ -1,0 +1,19 @@
+from fastapi import FastAPI, Query
+from typing import List
+import kafka 
+import snowflake.connector 
+
+app = FastAPI()
+
+# Connect to Kafka
+kafka_consumer = kafka.KafkaConsumer('topic_name')
+
+# Connect to Snowflake
+snowflake_connection = snowflake.connector.connect(
+    user='your_user',
+    password='your_password',
+    account='your_account',
+    warehouse='your_warehouse',
+    database='your_database',
+    schema='your_schema'
+)
