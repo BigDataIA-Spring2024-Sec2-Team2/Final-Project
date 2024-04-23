@@ -76,7 +76,11 @@ def hello_http(request):
             link = item.find_all("guid")[0].get_text()
             pubilsh = item.find_all("pubdate")[0].get_text()
             description = item.find_all("description")[0].get_text()
-            image = item.find_all("media:thumbnail")[0].get("url")
+            img = item.find_all("media:thumbnail")
+            if img:
+                image = img[0].get("url")
+            else:
+                image = ""
             temp = {
                 "title": title,
                 "link": link,
@@ -84,7 +88,7 @@ def hello_http(request):
                 "description": description,
                 "image_url": image,
                 "category": category,
-                "source": "ABC NEWS"
+                "source": "ABP NEWS"
             }
 
             embedded_title = openai_client.embeddings.create(
