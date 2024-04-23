@@ -73,10 +73,11 @@ def hello_http(request):
         embedded_data = []
         for item in item_content:
             title = item.find_all("title")[0].get_text()
-            link = item.find_all("guid")[0].get_text()
+            link = item.find("link").find_next_sibling(string=True)
             pubilsh = item.find_all("pubdate")[0].get_text()
-            description = item.find_all("description")[0].get_text()
-            image = item.find_all("media:thumbnail")[0].get("url")
+            tag = bs(item.find_all("description")[0].get_text())
+            description = tag.find("p").get_text()
+            image = tag.find("img").get("src")
             temp = {
                 "title": title,
                 "link": link,
@@ -84,14 +85,14 @@ def hello_http(request):
                 "description": description,
                 "image_url": image,
                 "category": category,
-                "source": "ABC NEWS"
+                "source": "ABP NEWS"
             }
-
+            
             embedded_title = openai_client.embeddings.create(
                 input=title, 
                 model=gpt_model,
             ).data[0].embedding
-
+            
             res_today = pinecone_index.query(vector=embedded_title, top_k=2, include_metadata=True, namespace=namespace_today)
             res_yesterday = pinecone_index.query(vector=embedded_title, top_k=2, include_metadata=True, namespace=namespace_yesterday)
             res = res_today["matches"] + res_yesterday["matches"]

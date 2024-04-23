@@ -72,11 +72,15 @@ def hello_http(request):
         list_news = []
         embedded_data = []
         for item in item_content:
-            title = item.find_all("title")[0].get_text()
-            link = item.find_all("guid")[0].get_text()
-            pubilsh = item.find_all("pubdate")[0].get_text()
-            description = item.find_all("description")[0].get_text()
-            image = item.find_all("media:thumbnail")[0].get("url")
+            title = item.find_all("title")[0].get_text().strip()
+            link = item.find_all("guid")[0].get_text().strip()
+            pubilsh = item.find_all("pubdate")[0].get_text().strip()
+            description = item.find_all("description")[0].get_text().strip()
+            img = item.find_all("media:content")
+            if img:
+                image = img[0].get("url")
+            else:
+                image = ""
             temp = {
                 "title": title,
                 "link": link,
@@ -84,14 +88,13 @@ def hello_http(request):
                 "description": description,
                 "image_url": image,
                 "category": category,
-                "source": "ABC NEWS"
+                "source": "NY TIMES"
             }
-
             embedded_title = openai_client.embeddings.create(
                 input=title, 
                 model=gpt_model,
             ).data[0].embedding
-
+            
             res_today = pinecone_index.query(vector=embedded_title, top_k=2, include_metadata=True, namespace=namespace_today)
             res_yesterday = pinecone_index.query(vector=embedded_title, top_k=2, include_metadata=True, namespace=namespace_yesterday)
             res = res_today["matches"] + res_yesterday["matches"]
