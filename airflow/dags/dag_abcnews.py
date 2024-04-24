@@ -37,17 +37,32 @@ def call_cloudFunction(base_url, category, file_name, **kwargs):
         headers={'Authorization': f"Bearer {TOKEN}", "Content-Type": "application/json"},
         data=json.dumps({"base_url": base_url, 'category': category, 'file_name': file_name})
     )
-    
     if r.status_code != 200:
         Exception("The Site can not be loaded")
-        
     status, reason, args = r.text.split(" | ")
     if status == "Fail":
         Exception("reason")
-    
     if "No New Data" in reason:
         kwargs['ti'].xcom_push(key='newdata_status', value=False)
     kwargs['ti'].xcom_push(key='newdata_status', value=True)
+
+def call_cloudFunction_clean(task, file_name, **kwargs):
+    pulled_value = kwargs['ti'].xcom_pull(dag_id='dag_abcnews', task_ids=task, key='newdata_status')
+    if pulled_value == False:
+        kwargs['ti'].xcom_push(key='news_clean', value=False)
+        return
+    TOKEN = google.oauth2.id_token.fetch_id_token(request, run_url)
+    r = requests.post(
+        run_url, 
+        headers={'Authorization': f"Bearer {TOKEN}", "Content-Type": "application/json"},
+        data=json.dumps({'file_name': file_name})
+    )
+    if r.status_code != 200:
+        Exception("The Site can not be loaded")
+    status = r.text
+    if status == "Fail":
+        Exception("Fail")
+    kwargs['ti'].xcom_push(key='news_clean', value=True)
 
 dag = DAG(
     dag_id="dag_abcnews",
@@ -63,19 +78,31 @@ start_task = DummyOperator(task_id='start', dag=dag)
 end_task = DummyOperator(task_id='end', dag=dag)
 
 # Define parallel tasks
-parallel_tasks = []
-task_after_parallel_tasks = []
+parallel_tasks_extract = []
+parallel_tasks_clean = []
 
 for key, values in abc_news_rss.items():
-    parallel_task = PythonOperator(
-        task_id=key,
+    parallel_task_extract = PythonOperator(
+        task_id=key + "_extract",
         python_callable=call_cloudFunction,
         dag=dag,
         provide_context=True,
         op_args=values
     )
     
-    parallel_tasks.append(parallel_task)
+    parallel_task_clean = PythonOperator(
+        task_id=key + "_clean",
+        python_callable=call_cloudFunction_clean,
+        dag=dag,
+        provide_context=True,
+        op_args=[key + "_extract", values[2]]
+    )
     
+    parallel_tasks_extract.append(parallel_task_extract)
+    parallel_tasks_clean.append(parallel_task_clean)
+
+for i in range(len(parallel_tasks_extract)):
+    parallel_tasks_extract[i] >> parallel_tasks_clean[i]
     
-start_task >> parallel_tasks >> end_task
+start_task >> parallel_tasks_extract
+parallel_tasks_clean >> end_task

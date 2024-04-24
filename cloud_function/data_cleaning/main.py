@@ -116,7 +116,7 @@ def clean_data(request):
             in_memory_file_watch.close()
 
             cursor = conn.cursor()
-            cursor.execute(f"COPY INTO watch FROM '@stage_gcs_bucket/{watch_file}' FILE_FORMAT = (FORMAT_NAME = 'news_ff') ON_ERROR = 'CONTINUE'")
+            cursor.execute(f"COPY INTO watch FROM '@stage_gcs_bucket_news/{watch_file}' FILE_FORMAT = (FORMAT_NAME = 'news_ff') ON_ERROR = 'CONTINUE'")
             cursor.close()
 
         return "Success"
