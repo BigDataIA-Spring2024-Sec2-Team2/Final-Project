@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup as bs
 import pandas as pd
 import os
 import time
+import html
 
 @functions_framework.http
 def hello_http(request):
@@ -75,7 +76,10 @@ def hello_http(request):
             title = item.find_all("title")[0].get_text()
             link = item.find_all("guid")[0].get_text()
             pubilsh = item.find_all("pubdate")[0].get_text()
-            description = item.find_all("description")[0].get_text()
+            desc_temp = item.find_all("description")[0].get_text().strip()
+            desc_temp = html.unescape(desc_temp)
+            soup = bs(desc_temp, "html.parser")
+            description = soup.find_all("p")[0].get_text()
             img = item.find_all("media:thumbnail")
             if img:
                 image = img[0].get("url")
