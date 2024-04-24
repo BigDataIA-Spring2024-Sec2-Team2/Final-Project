@@ -5,13 +5,20 @@ import jwt
 from datetime import datetime, timedelta
 from pydantic import BaseModel
 from typing import Optional
-from pymongo import MongoClient
-import configparser
+import os
+
+from dotenv import load_dotenv
+import pymongo
+import certifi 
+
+load_dotenv()
 
 class signup_data(BaseModel):
   email: str
   username: str
   password: str
+  interests: str
+  notify_about: str
 
 class login_data(BaseModel):
   email: str
@@ -19,31 +26,33 @@ class login_data(BaseModel):
 
 app = FastAPI()
 
-config = configparser.ConfigParser()
-config.read('configuration.properties')
-
 # JWT config
-SECRET_KEY = config['auth-api']['SECRET_KEY']
-ALGORITHM = config['auth-api']['ALGORITHM']
-ACCESS_TOKEN_EXPIRE_MINUTES = int(config['auth-api']['ACCESS_TOKEN_EXPIRE_MINUTES'])
+SECRET_KEY = os.getenv('SECRET_KEY', "your_secret_key")
+ALGORITHM = os.getenv('ALGORITHM', "HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES', 60))
 
 # Mongo config
-mongo_url = config['MongoDB']['mongo_url']
-db_name = config['MongoDB']['db_name']
-collection_name = config['MongoDB']['collection_name']
+mongo_url = os.getenv('mongo_url')
+db_name = os.getenv('db_name')
+collection_name = os.getenv('collection_name')
 
 # oauth2 scheme
-tokenUrl = config['password']['tokenUrl']
+tokenUrl = os.getenv('TOKEN_URL', "token")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=tokenUrl)
 
 # password encryption
-schemes = config['password']['schemes']
-deprecated = config['password']['deprecated']
+schemes = os.getenv('SCHEMES', "bcrypt")
+deprecated = os.getenv('DEPRECATED', "auto")
 pwd_context = CryptContext(schemes=schemes, deprecated=deprecated)
 
 def get_mongo_clien():
-  ''' get the db object '''
-  return MongoClient(mongo_url)
+    try:
+        connection = pymongo.MongoClient(mongo_url,tlsCAFile=certifi.where())
+        return connection
+    except Exception as e:
+        print(f"Failed to connect to MongoDB: {e}")
+        raise
+    
 
 def verify_password(plain_password, hashed_password):
   ''' verify the passowrd for login '''
@@ -58,20 +67,53 @@ def get_user(email: str):
   client.close()
   return result
 
-def create_user(email: str, password: str, username: str):
+def create_user(email: str, password: str, username: str, interests:str, notify_about: str):
   ''' add new user in db '''
   client = get_mongo_clien()
   db = client[db_name]
   collection = db[collection_name]
   
   hashed_password = pwd_context.hash(password)
+
+  news_categories = {
+    "Politics": 0,
+    "Business and Finance": 0,
+    "Technology": 0,
+    "Science": 0,
+    "Entertainment": 0,
+    "Sports": 0,
+    "Lifestyle": 0,
+    "Others": 0
+  }
+
+  views = news_categories
+
+  interests_list = [interest.strip().capitalize() for interest in interests.lower().split(',')]
+
+  for interest in interests_list:
+      found = False
+      for category in news_categories:
+          if interest.lower() == category.lower():
+              news_categories[category] = 1
+              found = True
+              break
+      if not found:
+          news_categories["Others"] = 1
+  
+  notify_about = notify_about.split(", ")
+
   document = {
     "email": email,
     "username": username,
-    "password": hashed_password
+    "password": hashed_password,
+    "interests": news_categories,
+    "notify_about": notify_about,
+    "views": views
+
   }
   collection.insert_one(document)
   client.close()
+  print("Success in insertion of data")
   return
 
 def authenticate_user(email: str, password: str):
@@ -100,9 +142,13 @@ async def register(payload: signup_data):
   email = payload.email
   password = payload.password
   username = payload.username
+  interests = payload.interests
+  notify_about = payload.notify_about
+
   if get_user(email):
     raise HTTPException(status_code=400, detail="Email already registered")
-  create_user(email, password, username)
+  
+  create_user(email, password, username, interests, notify_about)
   return {"message": "User registered successfully"}
 
 @app.post("/login")
@@ -122,3 +168,4 @@ async def login_for_access_token(payload: login_data):
     data={"sub": user["email"]}, expires_delta=access_token_expires
   )
   return {"access_token": access_token, "token_type": "bearer"}
+
