@@ -4,7 +4,7 @@ import snowflake.connector
 
 
 @functions_framework.http
-def clean_data(request):
+def load_data(request):
     ''' HTTP Cloud Function.
     read file from sourde bucket clean the data and load the clean data into destination bucket
     '''
@@ -34,9 +34,25 @@ def clean_data(request):
         schema=SNOWFLAKE_SCHEMA
     )
 
+    merge_query = f'''MERGE INTO articles a
+        USING (SELECT $1 title,
+                        $2 link,
+                        $3 description,
+                        $4 image_url,
+                        $5 category,
+                        $6 source,
+                        $7 publish_date,
+                        $8 id, 
+                        $9 keywords from @stage_gcs_bucket_keyword/{file_name} (FILE_FORMAT => news_ff)) s
+        ON a.link = s.link
+        WHEN NOT MATCHED THEN
+        INSERT (title, link, description, image_url, category, source, publish_date, id, keywords)
+        VALUES (s.title, s.link, s.description, s.image_url, s.category, s.source, s.publish_date, s.id, s.keywords);
+    '''
+    
     try:
         cursor = conn.cursor()
-        cursor.execute(f"COPY INTO watch FROM '@stage_gcs_bucket_keyword/{file_name}' FILE_FORMAT = (FORMAT_NAME = 'news_ff') ON_ERROR = 'CONTINUE'")
+        cursor.execute(merge_query)
         cursor.close()
 
         return "Success"
