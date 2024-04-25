@@ -10,24 +10,26 @@ import jwt
 import os
 from snowflake_connector import SnowflakeConnector
 from mongo_connector import MongoDBManager
+from serp import NewsSearch
 
 load_dotenv()
 
 router = APIRouter()
 snowflake_client = SnowflakeConnector()
 mongo_manager = MongoDBManager()
+serp_news = NewsSearch()
 
 # JWT config
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
 
 # oauth2 scheme
-tokenUrl = os.getenv('TOKEN_URL')
+tokenUrl = os.getenv('tokenUrl')
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=tokenUrl)
 
 # password encryption
-schemes = os.getenv('SCHEMES')
-deprecated = os.getenv('DEPRECATED')
+schemes = os.getenv('schemes')
+deprecated = os.getenv('deprecated')
 pwd_context = CryptContext(schemes=schemes, deprecated=deprecated)
 
 
@@ -74,6 +76,26 @@ async def searcher(to_search:str, authorization: str = Header(None)):
     result = data_retriever(to_search)
 
     return {"result": result}
+
+@router.get('/serp')
+async def searcher(to_search:str, authorization: str = Header(None)):
+
+    if authorization is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    parts = authorization.split()
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        raise HTTPException(status_code=401, detail="Invalid authorization header")
+    token = parts[1]
+    try:
+        token_decode = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM, ])
+        email: str = token_decode.get("sub")
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=401, detail="Token has expired")
+    
+    results = serp_news.search_news(to_search)
+
+    return {"result": results}
     
 
     

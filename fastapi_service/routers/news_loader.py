@@ -23,12 +23,12 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
 
 # oauth2 scheme
-tokenUrl = os.getenv('TOKEN_URL')
+tokenUrl = os.getenv('tokenUrl')
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=tokenUrl)
 
 # password encryption
-schemes = os.getenv('SCHEMES')
-deprecated = os.getenv('DEPRECATED')
+schemes = os.getenv('schemes')
+deprecated = os.getenv('deprecated')
 pwd_context = CryptContext(schemes=schemes, deprecated=deprecated)
 
 

@@ -36,12 +36,12 @@ db_name = os.getenv('db_name')
 collection_name = os.getenv('collection_name')
 
 # oauth2 scheme
-tokenUrl = os.getenv('TOKEN_URL', "token")
+tokenUrl = os.getenv('tokenUrl')
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=tokenUrl)
 
 # password encryption
-schemes = os.getenv('SCHEMES')
-deprecated = os.getenv('DEPRECATED')
+schemes = os.getenv('schemes')
+deprecated = os.getenv('deprecated')
 pwd_context = CryptContext(schemes=schemes, deprecated=deprecated)
 
 def get_mongo_clien():
