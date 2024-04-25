@@ -19,16 +19,16 @@ snowflake_client = SnowflakeConnector()
 mongo_manager = MongoDBManager()
 
 # JWT config
-SECRET_KEY = os.getenv('SECRET_KEY', "your_secret_key")
-ALGORITHM = os.getenv('ALGORITHM', "HS256")
+SECRET_KEY = os.getenv('SECRET_KEY')
+ALGORITHM = os.getenv('ALGORITHM')
 
 # oauth2 scheme
-tokenUrl = os.getenv('TOKEN_URL', "token")
+tokenUrl = os.getenv('TOKEN_URL')
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=tokenUrl)
 
 # password encryption
-schemes = os.getenv('SCHEMES', "bcrypt")
-deprecated = os.getenv('DEPRECATED', "auto")
+schemes = os.getenv('SCHEMES')
+deprecated = os.getenv('DEPRECATED')
 pwd_context = CryptContext(schemes=schemes, deprecated=deprecated)
 
 def get_user(email: str):
@@ -51,7 +51,7 @@ def update_user(email: str, new_details: dict):
     return status
 
 
-@router.get('/profile_view')
+@router.get('/view')
 async def profile_view(authorization: str = Header(None)):
 
     if authorization is None:
@@ -70,7 +70,7 @@ async def profile_view(authorization: str = Header(None)):
     user = get_user(email)
     return {"user": user}
 
-@router.post('/profile_update')
+@router.post('/update')
 async def profile_update(interests:dict, notify_about:str, authorization: str = Header(None)):
     if authorization is None:
         raise HTTPException(status_code=401, detail="Unauthorized")

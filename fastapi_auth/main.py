@@ -26,9 +26,9 @@ class login_data(BaseModel):
 app = FastAPI()
 
 # JWT config
-SECRET_KEY = os.getenv('SECRET_KEY', "your_secret_key")
-ALGORITHM = os.getenv('ALGORITHM', "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES', 2880))
+SECRET_KEY = os.getenv('SECRET_KEY')
+ALGORITHM = os.getenv('ALGORITHM')
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES'))
 
 # Mongo config
 mongo_url = os.getenv('mongo_url')
@@ -40,8 +40,8 @@ tokenUrl = os.getenv('TOKEN_URL', "token")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=tokenUrl)
 
 # password encryption
-schemes = os.getenv('SCHEMES', "bcrypt")
-deprecated = os.getenv('DEPRECATED', "auto")
+schemes = os.getenv('SCHEMES')
+deprecated = os.getenv('DEPRECATED')
 pwd_context = CryptContext(schemes=schemes, deprecated=deprecated)
 
 def get_mongo_clien():

@@ -18,16 +18,16 @@ snowflake_client = SnowflakeConnector()
 mongo_manager = MongoDBManager()
 
 # JWT config
-SECRET_KEY = os.getenv('SECRET_KEY', "your_secret_key")
-ALGORITHM = os.getenv('ALGORITHM', "HS256")
+SECRET_KEY = os.getenv('SECRET_KEY')
+ALGORITHM = os.getenv('ALGORITHM')
 
 # oauth2 scheme
-tokenUrl = os.getenv('TOKEN_URL', "token")
+tokenUrl = os.getenv('TOKEN_URL')
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=tokenUrl)
 
 # password encryption
-schemes = os.getenv('SCHEMES', "bcrypt")
-deprecated = os.getenv('DEPRECATED', "auto")
+schemes = os.getenv('SCHEMES')
+deprecated = os.getenv('DEPRECATED')
 pwd_context = CryptContext(schemes=schemes, deprecated=deprecated)
 
 
@@ -55,7 +55,7 @@ def data_retriever(to_find):
     return(result)
 
 
-@router.get('/')
+@router.get('/db')
 async def searcher(to_search:str, authorization: str = Header(None)):
 
     if authorization is None:
