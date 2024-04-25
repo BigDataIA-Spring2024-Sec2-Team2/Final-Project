@@ -18,6 +18,7 @@ class signup_data(BaseModel):
   password: str
   interests: dict
   notify_about: str
+  notifications: list
 
 class login_data(BaseModel):
   email: str
@@ -66,7 +67,7 @@ def get_user(email: str):
   client.close()
   return result
 
-def create_user(email: str, password: str, username: str, interests:dict, notify_about: str):
+def create_user(email: str, password: str, username: str, interests:dict, notify_about: str, notifications: list):
   ''' add new user in db '''
   client = get_mongo_clien()
   db = client[db_name]
@@ -108,7 +109,8 @@ def create_user(email: str, password: str, username: str, interests:dict, notify
     "password": hashed_password,
     "interests": interests,
     "notify_about": notify_about,
-    "views": news_categories
+    "views": news_categories,
+    "notifications": notifications
 
   }
   collection.insert_one(document)
@@ -144,11 +146,12 @@ async def register(payload: signup_data):
   username = payload.username
   interests = payload.interests
   notify_about = payload.notify_about
+  notifications = payload.notifications
 
   if get_user(email):
     raise HTTPException(status_code=400, detail="Email already registered")
   
-  create_user(email, password, username, interests, notify_about)
+  create_user(email, password, username, interests, notify_about, notifications)
   return {"message": "User registered successfully"}
 
 @app.post("/login")
