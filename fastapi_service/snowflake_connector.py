@@ -24,8 +24,3 @@ class SnowflakeConnector:
         with self.connection.cursor(DictCursor) as cursor:
             cursor.execute(query)
             return cursor.fetchall()
-
-# # Example usage
-# snowflake_client = SnowflakeConnector()
-# result = snowflake_client.execute_query("SELECT * FROM WEB_SCRAPED_DATA")
-# print(result)
