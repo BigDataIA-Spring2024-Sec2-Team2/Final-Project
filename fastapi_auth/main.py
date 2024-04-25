@@ -1,15 +1,14 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
-import jwt
 from datetime import datetime, timedelta
 from pydantic import BaseModel
 from typing import Optional
-import os
-
 from dotenv import load_dotenv
 import pymongo
 import certifi 
+import jwt
+import os
 
 load_dotenv()
 
@@ -17,7 +16,7 @@ class signup_data(BaseModel):
   email: str
   username: str
   password: str
-  interests: str
+  interests: dict
   notify_about: str
 
 class login_data(BaseModel):
@@ -29,7 +28,7 @@ app = FastAPI()
 # JWT config
 SECRET_KEY = os.getenv('SECRET_KEY', "your_secret_key")
 ALGORITHM = os.getenv('ALGORITHM', "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES', 60))
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES', 2880))
 
 # Mongo config
 mongo_url = os.getenv('mongo_url')
@@ -67,7 +66,7 @@ def get_user(email: str):
   client.close()
   return result
 
-def create_user(email: str, password: str, username: str, interests:str, notify_about: str):
+def create_user(email: str, password: str, username: str, interests:dict, notify_about: str):
   ''' add new user in db '''
   client = get_mongo_clien()
   db = client[db_name]
@@ -76,29 +75,30 @@ def create_user(email: str, password: str, username: str, interests:str, notify_
   hashed_password = pwd_context.hash(password)
 
   news_categories = {
-    "Politics": 0,
-    "Business and Finance": 0,
-    "Technology": 0,
-    "Science": 0,
-    "Entertainment": 0,
-    "Sports": 0,
-    "Lifestyle": 0,
-    "Others": 0
+      'travel': 0,
+      'sports': 0,
+      'international': 0,
+      'technology': 0,
+      'health': 0,
+      'us': 0,
+      'top': 0,
+      'politics': 0,
+      'entertainment': 0,
+      'europe': 0,
+      'football': 0,
+      'golf': 0,
+      'middleeast': 0,
+      'job': 0,
+      'environment': 0,
+      'world': 0,
+      'education': 0,
+      'elections': 0,
+      'india': 0,
+      'business': 0,
+      'olympics': 0,
+      'art': 0,
+      'tennis': 0
   }
-
-  views = news_categories
-
-  interests_list = [interest.strip().capitalize() for interest in interests.lower().split(',')]
-
-  for interest in interests_list:
-      found = False
-      for category in news_categories:
-          if interest.lower() == category.lower():
-              news_categories[category] = 1
-              found = True
-              break
-      if not found:
-          news_categories["Others"] = 1
   
   notify_about = notify_about.split(", ")
 
@@ -106,9 +106,9 @@ def create_user(email: str, password: str, username: str, interests:str, notify_
     "email": email,
     "username": username,
     "password": hashed_password,
-    "interests": news_categories,
+    "interests": interests,
     "notify_about": notify_about,
-    "views": views
+    "views": news_categories
 
   }
   collection.insert_one(document)
