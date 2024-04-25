@@ -93,9 +93,9 @@ async def searcher(to_search:str, authorization: str = Header(None)):
         print(e)
         raise HTTPException(status_code=401, detail="Token has expired")
     
-    results = serp_news.search_news(to_search)
+    news = serp_news.search_news(to_search)
 
-    return {"result": results}
+    return {"result": news}
     
 
     

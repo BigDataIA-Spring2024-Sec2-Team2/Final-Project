@@ -2,7 +2,7 @@ from serpapi import GoogleSearch
 from dotenv import load_dotenv
 import os
 import datetime
-import json
+
 
 class NewsSearch:
     def __init__(self):
