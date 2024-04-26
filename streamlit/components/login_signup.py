@@ -56,12 +56,16 @@ def sign_up():
             if validate_email_signup(email) and validate_username_signup(username) and validate_password_signup(password1, password2) and validate_interests(interests) and validate_notify_about(notify_about):
                 url = base_url + '/signup' 
 
+                interests_dict = {}
+                for inter in interests:
+                    interests_dict[inter] = 1
+
                 # Create payload including new fields
                 payload = {
                     "email": email,
-                    "password": password1,
                     "username": username,
-                    "interests": interests,
+                    "password": password1,
+                    "interests": interests_dict,
                     "notify_about": notify_about
                 }
 

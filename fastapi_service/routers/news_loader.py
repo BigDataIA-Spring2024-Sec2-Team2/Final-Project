@@ -31,7 +31,7 @@ pwd_context = CryptContext(schemes=schemes, deprecated=deprecated)
 def data_retriever(interested_topics):
 
     if interested_topics:
-        topics_str = ", ".join(["'" + topic + "'" for topic in interested_topics])
+        topics_str = ", ".join(["'" + topic.lower() + "'" for topic in interested_topics])
         where_clause = f"WHERE CATEGORY IN ({topics_str})"
     else:
         where_clause = ""
