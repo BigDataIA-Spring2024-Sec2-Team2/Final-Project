@@ -1,7 +1,7 @@
 # Final Project - NewsNest
 
 ## Live application Links
-[![codelabs](https://img.shields.io/badge/codelabs-4285F4?style=for-the-badge&logo=codelabs&logoColor=white)]()
+[![codelabs](https://img.shields.io/badge/codelabs-4285F4?style=for-the-badge&logo=codelabs&logoColor=white)](https://codelabs-preview.appspot.com/?file_id=1rzqxw3KQvWHJ4hZ_C5yeztZNKSDJdSKgfqz2jEicZi4#8)
 
 - Airflow: http://35.184.124.125:8080/login/
 - Fast API Auth: http://34.134.136.79:8000/docs#/
@@ -134,7 +134,7 @@ Accessing and analysing diverse news sources is cumbersome, leading to informati
 
 ## Project run outline
 
-Documentation - [Link]() 
+Documentation - [Link](https://docs.google.com/document/d/1rzqxw3KQvWHJ4hZ_C5yeztZNKSDJdSKgfqz2jEicZi4/edit#heading=h.xhrwjh19ja3e) 
 
 ## References
 
