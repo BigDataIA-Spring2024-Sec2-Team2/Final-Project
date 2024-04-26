@@ -72,18 +72,18 @@ async def profile_view(authorization: str = Header(None)):
 
 @router.post('/update')
 async def profile_update(interests:dict, notify_about:str, authorization: str = Header(None)):
-    # if authorization is None:
-    #     raise HTTPException(status_code=401, detail="Unauthorized")
-    # parts = authorization.split()
-    # if len(parts) != 2 or parts[0].lower() != "bearer":
-    #     raise HTTPException(status_code=401, detail="Invalid authorization header")
-    # token = parts[1]
-    # try:
-    #     token_decode = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM, ])
-    #     email: str = token_decode.get("sub")
-    # except Exception as e:
-    #     print(e)
-    #     raise HTTPException(status_code=401, detail="Token has expired")
+    if authorization is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    parts = authorization.split()
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        raise HTTPException(status_code=401, detail="Invalid authorization header")
+    token = parts[1]
+    try:
+        token_decode = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM, ])
+        email: str = token_decode.get("sub")
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=401, detail="Token has expired")
     
     notify_about = list(notify_about.split(", "))
     to_update = {"interests": interests, "notify_about": notify_about}
