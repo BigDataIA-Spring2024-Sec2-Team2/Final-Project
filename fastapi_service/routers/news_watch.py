@@ -30,7 +30,7 @@ pwd_context = CryptContext(schemes=schemes, deprecated=deprecated)
 
 def data_retriever():
     sql_query = f"""
-        SELECT *
+        SELECT title, link, description, image_url
         FROM WATCH
         ORDER BY PUBLISH_DATE DESC;
     """
@@ -38,12 +38,11 @@ def data_retriever():
     return(result)
 
 def get_user(email: str):
-  
-  mongo_manager.connect()
-  collection = mongo_manager.get_collection()
-  result = collection.find_one({"email": email})
-  mongo_manager.disconnect()
-  return result
+    mongo_manager.connect()
+    collection = mongo_manager.get_collection()
+    result = collection.find_one({"email": email})
+    mongo_manager.disconnect()
+    return result
 
 @router.get('/')
 async def news_watch(authorization: str = Header(None)):
