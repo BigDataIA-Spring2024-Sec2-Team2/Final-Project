@@ -19,7 +19,6 @@ Accessing and analysing diverse news sources is cumbersome, leading to informati
 ## Technologies Used
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/)
 [![FastAPI](https://img.shields.io/badge/fastapi-109989?style=for-the-badge&logo=FASTAPI&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Amazon AWS](https://img.shields.io/badge/Amazon_AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
 [![Python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)](https://www.python.org/)
 [![Apache Airflow](https://img.shields.io/badge/Airflow-017CEE?style=for-the-badge&logo=Apache%20Airflow&logoColor=white)](https://airflow.apache.org/)
 [![Docker](https://img.shields.io/badge/Docker-%232496ED?style=for-the-badge&logo=Docker&color=blue&logoColor=white)](https://www.docker.com)
@@ -28,6 +27,14 @@ Accessing and analysing diverse news sources is cumbersome, leading to informati
 [![Snowflake](https://img.shields.io/badge/snowflake-%234285F4?style=for-the-badge&logo=snowflake&link=https%3A%2F%2Fwww.snowflake.com%2Fen%2F%3F_ga%3D2.41504805.669293969.1706151075-1146686108.1701841103%26_gac%3D1.160808527.1706151104.Cj0KCQiAh8OtBhCQARIsAIkWb68j5NxT6lqmHVbaGdzQYNSz7U0cfRCs-STjxZtgPcZEV-2Vs2-j8HMaAqPsEALw_wcB&logoColor=white)
 ](https://www.snowflake.com/en/?_ga=2.41504805.669293969.1706151075-1146686108.1701841103&_gac=1.160808527.1706151104.Cj0KCQiAh8OtBhCQARIsAIkWb68j5NxT6lqmHVbaGdzQYNSz7U0cfRCs-STjxZtgPcZEV-2Vs2-j8HMaAqPsEALw_wcB)
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)](https://streamlit.io/)
+[![Pinecone](https://img.shields.io/badge/Pinecone-8C54FF?style=for-the-badge&logo=pinecone&logoColor=white)](https://www.pinecone.io/)
+[![SERP API](https://img.shields.io/badge/SERP_API-009688?style=for-the-badge&logo=google&logoColor=white)](https://serpapi.com/)
+[![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-231F20?style=for-the-badge&logo=apache%20kafka&logoColor=white)](https://kafka.apache.org/)
+[![Pydantic](https://img.shields.io/badge/Pydantic-00BFFF?style=for-the-badge&logo=python&logoColor=white)](https://pydantic-docs.helpmanual.io/)
+[![pytest](https://img.shields.io/badge/pytest-0A9EDC?style=for-the-badge&logo=python&logoColor=white)](https://pytest.org/)
+
+
+
 
 ## Pre requisites
 1. Python Knowledge
@@ -36,7 +43,7 @@ Accessing and analysing diverse news sources is cumbersome, leading to informati
 4. Docker Desktop
 5. MongoDB database knowledge
 6. Vector database knowledge
-8. Stremlit implementation
+8. Streamlit knowledge
 9. Airflow pipeline knowledge
 10. Google Cloud Platform account and hosting knowledge
 
