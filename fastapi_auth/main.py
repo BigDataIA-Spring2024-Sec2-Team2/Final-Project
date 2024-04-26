@@ -113,10 +113,14 @@ def create_user(email: str, password: str, username: str, interests:dict, notify
     "notifications": notifications
 
   }
-  collection.insert_one(document)
-  client.close()
-  print("Success in insertion of data")
-  return
+  try:
+    collection.insert_one(document)
+    status =1
+    client.close()
+  except:
+    status = 0
+
+  return status
 
 def authenticate_user(email: str, password: str):
   ''' Authenticate user Login '''
@@ -151,8 +155,11 @@ async def register(payload: signup_data):
   if get_user(email):
     raise HTTPException(status_code=400, detail="Email already registered")
   
-  create_user(email, password, username, interests, notify_about, notifications)
-  return {"message": "User registered successfully"}
+  status = create_user(email, password, username, interests, notify_about, notifications)
+  if status ==1:
+    return {"message": "User registered successfully"}
+  else:
+    return {"message": "User registration Failed"}
 
 @app.post("/login")
 async def login_for_access_token(payload: login_data):
