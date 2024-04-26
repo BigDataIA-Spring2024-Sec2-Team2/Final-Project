@@ -28,18 +28,10 @@ deprecated = os.getenv('deprecated')
 pwd_context = CryptContext(schemes=schemes, deprecated=deprecated)
 
 
-def data_retriever(interested_topics):
-
-    if interested_topics:
-        topics_str = ", ".join(["'" + topic + "'" for topic in interested_topics])
-        where_clause = f"WHERE CATEGORY IN ({topics_str})"
-    else:
-        where_clause = ""
-
+def data_retriever():
     sql_query = f"""
         SELECT *
-        FROM ARTICLES
-        {where_clause}
+        FROM WATCH
         ORDER BY PUBLISH_DATE DESC;
     """
     result = snowflake_client.execute_query(sql_query)
@@ -54,7 +46,7 @@ def get_user(email: str):
   return result
 
 @router.get('/')
-async def news_loader(authorization: str = Header(None)):
+async def news_watch(authorization: str = Header(None)):
 
     if authorization is None:
         raise HTTPException(status_code=401, detail="Unauthorized")
@@ -68,14 +60,7 @@ async def news_loader(authorization: str = Header(None)):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=401, detail="Token has expired")
-    
-    user = get_user(email)
-    interested_topics = [topic for topic, value in user['interests'].items() if value == 1]
-    result = data_retriever(interested_topics)
+
+    result = data_retriever()
 
     return {"result": result}
-
-
-    
-
-    
