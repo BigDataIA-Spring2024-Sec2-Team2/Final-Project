@@ -40,7 +40,8 @@ def data_retriever(interested_topics):
         SELECT *
         FROM ARTICLES
         {where_clause}
-        ORDER BY PUBLISH_DATE DESC;
+        ORDER BY PUBLISH_DATE DESC
+        LIMIT 50;
     """
     result = snowflake_client.execute_query(sql_query)
     return(result)
