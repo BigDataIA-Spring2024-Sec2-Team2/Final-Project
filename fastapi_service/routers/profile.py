@@ -87,7 +87,7 @@ async def profile_update(interests:dict, notify_about:str, authorization: str = 
     
     notify_about = list(notify_about.split(", "))
     to_update = {"interests": interests, "notify_about": notify_about}
-    status = update_user("agash", to_update)
+    status = update_user(email, to_update)
 
     return {"message": status}
 
