@@ -68,7 +68,7 @@ async def profile_view(authorization: str = Header(None)):
         raise HTTPException(status_code=401, detail="Token has expired")
     
     user = get_user(email)
-    return {"user": user}
+    return {"interest": user['interests'], "notification": user["notifications"]}
 
 @router.post('/update')
 async def profile_update(payload:dict, authorization: str = Header(None)):
