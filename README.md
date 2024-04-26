@@ -128,7 +128,14 @@ Accessing and analysing diverse news sources is cumbersome, leading to informati
 
 
 ## How to run Application Locally
-
+1. Clone the GitHub Project
+2. Add configuration.properties
+3. Load Cloud Functions with main.py
+4. Link the cloud functions with airflow conifguration.properties
+5. Run Airflow locally using the docker image
+6. run the docker image for fasapi-auth
+7. run the docker image for fastapi-service
+8. run the docker image for setreamlit
 
 ## Projects Task
 
