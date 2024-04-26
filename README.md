@@ -7,6 +7,7 @@
 - Fast API Auth: http://34.134.136.79:8000/docs#/
 - Fast API Services: http://35.193.161.238:8010/docs
 - Streamlit Application: http://35.225.127.225:8501/
+- YouTube Video: https://youtu.be/tW1TLVahicY
 
 ## Problem Statement 
 Accessing and analysing diverse news sources is cumbersome, leading to information overload and a lack of personalised experiences. Manual scanning and filtering news based on interests is time-consuming, and a real-time notifier on latest news tailored to individual interests is required. A scalable data engineering solution is needed to automate news scraping from reliable sources, processing, and delivery, ensuring personalised, real-time updates while prioritising data integrity and user engagement.
