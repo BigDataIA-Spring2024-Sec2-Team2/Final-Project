@@ -113,7 +113,7 @@ def call_cloudFunction_load(prev_task, file_name, **kwargs):
 
 dag = DAG(
     dag_id="dag_nytimes",
-    schedule=None,
+    schedule_interval='*/15 * * * *',
     start_date=days_ago(0),
     catchup=False,
     dagrun_timeout=timedelta(minutes=60),
