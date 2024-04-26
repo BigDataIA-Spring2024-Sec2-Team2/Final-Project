@@ -37,10 +37,10 @@ def data_retriever(to_find):
 
     if to_find:
         to_find = to_find.lower().split()
-        where_clause = f"WHERE TITLE LIKE '%{to_find[0]}%'"
+        where_clause = f"WHERE LOWER(TITLE) LIKE '%{to_find[0]}%'"
 
         for i in range(1,len(to_find)):
-            statement = f"OR TITLE LIKE '%{to_find[i]}%'"
+            statement = f"OR LOWER(TITLE) LIKE '%{to_find[i]}%'"
             where_clause+=statement
 
     else:
