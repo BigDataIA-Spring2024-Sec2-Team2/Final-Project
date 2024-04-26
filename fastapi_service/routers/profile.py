@@ -71,7 +71,7 @@ async def profile_view(authorization: str = Header(None)):
     return {"user": user}
 
 @router.post('/update')
-async def profile_update(interests:dict, notify_about:str, authorization: str = Header(None)):
+async def profile_update(payload:dict, authorization: str = Header(None)):
     if authorization is None:
         raise HTTPException(status_code=401, detail="Unauthorized")
     parts = authorization.split()
@@ -84,9 +84,8 @@ async def profile_update(interests:dict, notify_about:str, authorization: str = 
     except Exception as e:
         print(e)
         raise HTTPException(status_code=401, detail="Token has expired")
-    
-    notify_about = list(notify_about.split(", "))
-    to_update = {"interests": interests, "notify_about": notify_about}
+    notify_about = list(payload["notify_about"].split(", "))
+    to_update = {"interests": payload["interests"], "notify_about": notify_about}
     status = update_user(email, to_update)
 
     return {"message": status}

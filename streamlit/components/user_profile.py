@@ -6,7 +6,7 @@ import json
 
 config = configparser.ConfigParser()
 config.read('./configuration.properties')
-base_url = config['APIs']['base_url_auth']
+base_url = config['APIs']['base_url']
 
 
 
@@ -29,17 +29,19 @@ def signup_and_preferences():
     
     
     if update:
-        url = base_url + '/signup?notify_about='+notify_about 
-
-        # Create payload including new fields
-    
-
-        json_data = json.dumps(interest)
+        url = base_url + '/profile/update' 
+        access_token = st.session_state["access_token"]
+        token_type = st.session_state["token_type"]
+        data = {
+            "interests": interests_dict,  # Replace with actual interests data
+            "notify_about": notify_about # Replace with actual notify_about data
+        }
 
         headers = {
             'Content-Type': 'application/json',  
+            "Authorization": "{} {}".format(token_type, access_token)
         }
-        response = requests.post(url, headers=headers, data=json_data)
+        response = requests.post(url, headers=headers, json=data)
 
         if response.status_code == 200:
             st.success("Updated preferences")
