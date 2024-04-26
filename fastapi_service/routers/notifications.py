@@ -58,6 +58,6 @@ async def notify(authorization: str = Header(None)):
     
     user = get_user(email)
     notifications = user["notifications"]
-    sorted_notifications = sorted(notifications, key=lambda x: x["PUBLISH_DATE"], reverse=True)
+    sorted_notifications = sorted(notifications, key=lambda x: x[6], reverse=True)
 
     return {"notifications": sorted_notifications}
