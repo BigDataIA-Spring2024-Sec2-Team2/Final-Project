@@ -60,6 +60,21 @@ def news_id(id):
         raise  HTTPException(status_code=401, detail="Invalid NEWS ID")
     return(result)
 
+def top_news():
+
+    sql_query = f"""
+        SELECT *
+        FROM ARTICLES
+        WHERE CATEGORY IN ('top')
+        ORDER BY PUBLISH_DATE DESC
+        LIMIT 4;
+    """
+    try:
+        result = snowflake_client.execute_query(sql_query)
+    except:
+        raise  HTTPException(status_code=401, detail="Invalid NEWS ID")
+    return(result)
+
 def get_user(email: str):
   
   mongo_manager.connect()
@@ -110,6 +125,25 @@ async def news_finder(id:int,authorization: str = Header(None)):
 
     return {"result": result}
 
+@router.get('/top')
+async def news_loader(authorization: str = Header(None)):
+
+    if authorization is None:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    parts = authorization.split()
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        raise HTTPException(status_code=401, detail="Invalid authorization header")
+    token = parts[1]
+    try:
+        token_decode = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM, ])
+        email: str = token_decode.get("sub")
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=401, detail="Token has expired")
+    
+    result = top_news()
+
+    return {"result": result}
     
 
     
