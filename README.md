@@ -3,18 +3,21 @@
 ## Live application Links
 [![codelabs](https://img.shields.io/badge/codelabs-4285F4?style=for-the-badge&logo=codelabs&logoColor=white)]()
 
-- Airflow: 
-- Fast API: 
-- Streamlit Application: 
+- Airflow: http://35.184.124.125:8080/login/
+- Fast API Auth: http://34.134.136.79:8000/docs#/
+- Fast API Services: http://35.193.161.238:8010/docs
+- Streamlit Application: http://35.225.127.225:8501/
 
 ## Problem Statement 
 Accessing and analysing diverse news sources is cumbersome, leading to information overload and a lack of personalised experiences. Manual scanning and filtering news based on interests is time-consuming, and a real-time notifier on latest news tailored to individual interests is required. A scalable data engineering solution is needed to automate news scraping from reliable sources, processing, and delivery, ensuring personalised, real-time updates while prioritising data integrity and user engagement.
 
 ## Project Goals
-1. 
-2.
-3. 
-4. 
+1. Provide Comprehensive and Trustworthy News: The primary goal of the project is to offer users a comprehensive and trustworthy news aggregation platform. This involves sourcing news articles from reputable outlets like The New York Times, CBC News, ABP News, and ABC News to ensure accuracy and reliability in the information provided.
+2. Real-Time Updates: The project aims to deliver real-time summaries of current events across various topics, including politics, business, technology, and entertainment. The goal is to keep users informed about the latest developments as they occur.
+3. Personalization: Another goal is to provide personalized news experiences for users. This includes allowing individuals to customize their news feed based on their interests, ensuring that they receive content relevant to their preferences.
+4. Automation and Scalability: The project aims to develop a scalable data engineering solution for automating news scraping from reliable sources. This involves periodic scraping of news, parallel scraping to improve efficiency, and ensuring scalability to handle increasing volumes of data.
+5. Alert System: Implementing an alert system for notifying users about real-time updates is also a goal of the project. This ensures that users are promptly informed about important news developments.
+6. Avoiding Repetitive News: To enhance user experience, the project aims to avoid repetitive news by implementing mechanisms to filter out duplicate or redundant content from multiple sources.
 
 ## Technologies Used
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/)
