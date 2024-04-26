@@ -6,11 +6,10 @@ from components.watch_news_dashboard import watch_news
 from components.google_search import google_search
 
 def tabs():
-  st.title("Welcome to NewsNest")
   options = ["News Dashboard", "Watch News","Google Search","User Profile"]
   icons = ['cloud-upload-fill','gear-fill', 'clipboard-data-fill','clipboard-data-fill'] 
 
-  login_menu = option_menu(None, options, 
+  nav_menu = option_menu(None, options, 
     icons=icons, 
     menu_icon="cast", 
     key='nav_menu',
@@ -18,7 +17,7 @@ def tabs():
     orientation="horizontal"
   )
 
-  login_menu
+  nav_menu
 
   backend_video_links = [
     "https://abcnews.go.com/US/video/full-pink-moon-revealed-timelapse-footage-109594961"

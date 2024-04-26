@@ -44,7 +44,6 @@ def sign_up():
         
         interests = st.multiselect(':blue[Interests]', options=interests_list, default=[], format_func=lambda x: x)
         
-       
         notify_about = st.text_input(':blue[Notify About]', placeholder='Enter what you want to be notified about (e.g., Apple, Elon Musk, Politics)')
         
         btn1, btn2, btn3 = st.columns([3, 1, 3])
@@ -78,13 +77,11 @@ def sign_up():
                 else: 
                     st.error("Error Try Again")
 
+
 def login():
     ''' Login form '''
     
-
     with st.form(key='login', clear_on_submit=True):
-        
-    
         st.subheader(':red[Login]')
         username = st.text_input(':blue[Email]', placeholder='Enter Your Email')
         password = st.text_input(':blue[Password]', placeholder='Enter Your Password', type='password')
@@ -93,21 +90,13 @@ def login():
             sub = st.form_submit_button('Login')
 
         if sub:
-            st.session_state["auth_status"] = True
-            st.session_state["username"] = "Narayani"
-            st.session_state["access_token"] = "access_token"
-            st.session_state["token_type"] = "token-type"
-            st.rerun()
-            return
             if validate_username(username) and validate_password(password):
                 url = base_url + '/login'
                 payload = {
                     'email': username, 
                     'password': password
                 }
-
                 json_data = json.dumps(payload)
-
                 headers = {
                     'Content-Type': 'application/json',
                 }
@@ -116,8 +105,9 @@ def login():
                     st.session_state["auth_status"] = True
                     st.session_state["username"] = username
                     st.session_state["access_token"] = response.json()["access_token"]
-                    st.session_state["token_type"] = response.json()["token-type"]
+                    st.session_state["token_type"] = response.json()["token_type"]
                     st.rerun()
+
 
 def validate_email_signup(email):
     ''' Validate email for signup '''
@@ -133,6 +123,7 @@ def validate_email_signup(email):
         st.warning('Enter an Email')
         return False
 
+
 def validate_username_signup(username):
     ''' Validate username for signup '''
     if username:
@@ -144,6 +135,7 @@ def validate_username_signup(username):
     else:
         st.warning('Enter an Username')
         return False
+
 
 def validate_password_signup(password1, password2):
     ''' Validate password for signup '''
@@ -161,6 +153,7 @@ def validate_password_signup(password1, password2):
         st.warning('Enter Password')
         return False
 
+
 def validate_username(username):
     ''' Validate username '''
     if username:
@@ -168,6 +161,7 @@ def validate_username(username):
     else:
         st.warning('Enter an Username')
         return False
+
 
 def validate_password(password):
     ''' Validate password '''
@@ -193,5 +187,3 @@ def validate_notify_about(notify_about):
     else:
         st.warning('Enter Your Preferences')
         return False
-    
-menu_login()

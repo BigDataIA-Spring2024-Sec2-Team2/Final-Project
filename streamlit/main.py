@@ -2,7 +2,7 @@ import streamlit as st
 from components.login_signup import menu_login
 from components.navigation import tabs
 
-st.set_page_config(page_title='News Feed', page_icon='🤧')
+st.set_page_config(page_title='News Feed', page_icon='🤧', layout="wide")
 
 
 if "auth_status" not in st.session_state:
