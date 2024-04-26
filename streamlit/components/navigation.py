@@ -4,11 +4,36 @@ from components.user_profile import signup_and_preferences
 from components.news_dashboard import news_nest_app, news_nest_top, search
 from components.watch_news_dashboard import watch_news
 from components.google_search import google_search
+import configparser
+import requests
+
+config = configparser.ConfigParser()
+config.read('./configuration.properties')
+base_url = config['APIs']['base_url']
 
 def tabs():
   options = ["News Dashboard", "Watch News","Google Search","User Profile"]
-  icons = ['cloud-upload-fill','gear-fill', 'clipboard-data-fill','clipboard-data-fill'] 
+  icons = ['','', '',''] 
 
+  with st.expander("See Notifications"):
+    url = base_url + '/notify'
+    access_token = st.session_state["access_token"]
+    token_type = st.session_state["token_type"]
+    # Making the POST request
+    headers = {
+        "Authorization": "{} {}".format(token_type, access_token),
+        'Content-Type': 'application/json',
+    }
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+      if response.json()["notifications"] != []:
+        for result in response.json()["notifications"]:
+          st.markdown(result["TITLE"] + ' ' + f"[View Full News]({result['LINK']})")
+      else:
+        st.write("No Notification")
+    else:
+      st.write("Request Not Processed")
   nav_menu = option_menu(None, options, 
     icons=icons, 
     menu_icon="cast", 
