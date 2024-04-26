@@ -18,7 +18,6 @@ class signup_data(BaseModel):
   password: str
   interests: dict
   notify_about: str
-  notifications: list
 
 class login_data(BaseModel):
   email: str
@@ -145,12 +144,13 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 @app.post("/signup")
 async def register(payload: signup_data):
   ''' Endpoint Sign Up new user '''
+  print(payload)
   email = payload.email
   password = payload.password
   username = payload.username
   interests = payload.interests
   notify_about = payload.notify_about
-  notifications = payload.notifications
+  notifications = []
 
   if get_user(email):
     raise HTTPException(status_code=400, detail="Email already registered")

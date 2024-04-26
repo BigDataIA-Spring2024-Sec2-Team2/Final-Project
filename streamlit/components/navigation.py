@@ -19,16 +19,12 @@ def tabs():
 
   nav_menu
 
-  backend_video_links = [
-    "https://abcnews.go.com/US/video/full-pink-moon-revealed-timelapse-footage-109594961"
-  ]
-
   if st.session_state["nav_menu"] == "News Dashboard" or st.session_state["nav_menu"]==None:
     search()
     news_nest_top()
     news_nest_app()
   elif st.session_state["nav_menu"] == "Watch News":
-    watch_news(backend_video_links)
+    watch_news()
   elif st.session_state["nav_menu"] == "Google Search":
     google_search()
   elif st.session_state["nav_menu"] == "User Profile":

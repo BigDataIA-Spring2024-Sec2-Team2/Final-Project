@@ -1,10 +1,20 @@
 import streamlit as st
 import requests
 import configparser
+from streamlit_modal import Modal
+import requests
+from PIL import Image
+from io import BytesIO
 
 config = configparser.ConfigParser()
 config.read('./configuration.properties')
-base_url = config['APIs']['base_url_auth']
+base_url = config['APIs']['base_url']
+
+
+def show_modal(news_data):
+    st.write(news_data["TITLE"])
+    st.markdown(f'[View Full News]({news_data["LINK"]})')
+
 
 def google_search():
     
@@ -16,7 +26,8 @@ def google_search():
         sub = st.form_submit_button('Search')
         
         if sub:
-            url = base_url + '/search/serp?to_search=' + google_search
+            url = base_url + "/search/serp?to_search=" + google_search.replace(" ", "%20")
+            print(url)
             access_token = st.session_state["access_token"]
             token_type = st.session_state["token_type"]
             # Making the POST request
@@ -24,37 +35,22 @@ def google_search():
                 "Authorization": "{} {}".format(token_type, access_token),
                 'Content-Type': 'application/json',
             }
+            
             response = requests.get(url, headers=headers)
-            
-            news_data = []
-            for result in response['result']:
-                formatted_result = {}
-                formatted_result['Title'] = result.get('TITLE',"")
-                formatted_result['Image_url'] = result.get('IMAGE_URL',"")
-                formatted_result['Source'] = result.get('SOURCE',"")
-                formatted_result['Publish_Date'] = result.get('PUBLISH_DATE',"")
-                news_data.append(formatted_result)
-                
-            
-            def display_popup_card(news_item):
-                st.write("### " + news_item["Title"])
-                st.image(news_item["Image"], use_column_width=True)
-                st.write(news_item["Source"])
-                st.write(news_item["Publish_date"])
-
-                # Add a close button
-                if st.button("Close"):
-                    st.write("Popup closed.")
-
-            col_count = 4
-            for i in range(0, len(news_data), col_count):
-                cols = st.columns(col_count)
-                for j in range(col_count):
-                    if i + j < len(news_data):
-                        with cols[j]:
-                            st.image(news_data[i + j]["Image_url"], use_column_width=True)
-                            if st.button(news_data[i + j]["Title"]):
-                                selected_news = news_data[i + j]
-                                st.write("---")
-                                display_popup_card(selected_news)
-    
+            if response.status_code == 200:
+                search_news = response.json()["result"]
+                col_count = 4
+                for i in range(0, len(search_news), col_count):
+                    cols = st.columns(col_count)
+                    for j in range(col_count):
+                        if i + j < len(search_news):
+                            with cols[j]:
+                                response_img = requests.get(search_news[i + j]["IMAGE_URL"])
+                                if response_img.status_code == 200:
+                                    # Open the image using PIL
+                                    image = Image.open(BytesIO(response_img.content))
+                                    # Display the image in Streamlit
+                                    st.image(image, use_column_width=True)
+                                show_modal(search_news[i + j])
+            else:
+                st.write("No News returned for this Search")
