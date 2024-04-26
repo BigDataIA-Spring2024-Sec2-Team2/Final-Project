@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 from components.user_profile import signup_and_preferences
-from components.news_dashboard import news_nest_app
+from components.news_dashboard import news_nest_app, news_nest_top, search
 from components.watch_news_dashboard import watch_news
 from components.google_search import google_search
 
@@ -23,7 +23,9 @@ def tabs():
     "https://abcnews.go.com/US/video/full-pink-moon-revealed-timelapse-footage-109594961"
   ]
 
-  if st.session_state["nav_menu"] == "News Dashboard":
+  if st.session_state["nav_menu"] == "News Dashboard" or st.session_state["nav_menu"]==None:
+    search()
+    news_nest_top()
     news_nest_app()
   elif st.session_state["nav_menu"] == "Watch News":
     watch_news(backend_video_links)
@@ -31,5 +33,3 @@ def tabs():
     google_search()
   elif st.session_state["nav_menu"] == "User Profile":
     signup_and_preferences()
-  else:
-    news_nest_app()
