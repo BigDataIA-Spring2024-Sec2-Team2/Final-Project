@@ -132,9 +132,9 @@ Accessing and analysing diverse news sources is cumbersome, leading to informati
 ## How to run Application Locally
 
 
-## Project run outline
+## Projects Task
 
-Documentation - [Link](https://docs.google.com/document/d/1rzqxw3KQvWHJ4hZ_C5yeztZNKSDJdSKgfqz2jEicZi4/edit#heading=h.xhrwjh19ja3e) 
+GitHub Projects - [Link](https://github.com/orgs/BigDataIA-Spring2024-Sec2-Team2/projects/4) 
 
 ## References
 
@@ -143,8 +143,11 @@ Documentation - [Link](https://docs.google.com/document/d/1rzqxw3KQvWHJ4hZ_C5yez
 - https://aws.amazon.com/
 - https://app.snowflake.com/
 
-    Name | Contribution %| Contributions |
-  --- |--- | --- |
-  Anshul Chaudhary  | 33.3% |  |
-  Agash Uthayasuriyan | 33.3% |  |
-  Narayani Arun Patil | 33.3% |  |
+# Project Contributors
+
+| Name                | NEU ID   | Contributions                                            | Contribution Percentage |
+|---------------------|----------|----------------------------------------------------------|-------------------------|
+| Anshul Chadhary     | 002820096| Airflow, Cloud Functions, Web Scraping, GCP Bucket Data Storage, Deployment, Kafka, OpenAI | 33.3% |
+| Agash Uthayasuriyan | 002866025| FastAPI Services, Data Querying, PyTest, Serp API        | 33.3% |
+| Narayani Arun Patil | 002830816| Cloud Functions, Snowflake & GCP Bucket Data Storage, Streamit | 33.3% |
+
