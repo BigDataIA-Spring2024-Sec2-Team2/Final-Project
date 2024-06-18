@@ -1,7 +1,7 @@
 # Final Project - NewsNest
 
 ## Live application Links
-[![codelabs](https://img.shields.io/badge/codelabs-4285F4?style=for-the-badge&logo=codelabs&logoColor=white)](https://codelabs-preview.appspot.com/?file_id=1rzqxw3KQvWHJ4hZ_C5yeztZNKSDJdSKgfqz2jEicZi4#0)
+[![codelabs](https://img.shields.io/badge/codelabs-4285F4?style=for-the-badge&logo=codelabs&logoColor=white)](https://codelabs-preview.appspot.com/?file_id=1kXw2L7Lqmu_Bh7hTnbkqL2zNGTpLn2d7kOsWqbmLkdI#0)
 
 - Airflow: http://35.184.124.125:8080/login/
 - Fast API Auth: http://34.134.136.79:8000/docs#/
@@ -37,6 +37,19 @@ Accessing and analysing diverse news sources is cumbersome, leading to informati
 [![Pydantic](https://img.shields.io/badge/Pydantic-00BFFF?style=for-the-badge&logo=python&logoColor=white)](https://pydantic-docs.helpmanual.io/)
 [![pytest](https://img.shields.io/badge/pytest-0A9EDC?style=for-the-badge&logo=python&logoColor=white)](https://pytest.org/)
 
+
+## Architecture Diagram
+Data FLow:
+
+![alt text](https://github.com/BigDataIA-Spring2024-Sec2-Team2/Final-Project/blob/main/Architecture%20Diagram/Scrapping%20-%20load.png)
+
+Kafka Stream:
+
+![alt text](https://github.com/BigDataIA-Spring2024-Sec2-Team2/Final-Project/blob/main/Architecture%20Diagram/Kafka.png)
+
+API:
+
+![alt text](https://github.com/BigDataIA-Spring2024-Sec2-Team2/Final-Project/blob/main/Architecture%20Diagram/User%20intercaction.png)
 
 ```
 📦 Final-Project
